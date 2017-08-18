@@ -1,0 +1,7 @@
+
+#mapa{border:1px solid #999;height:200px}
+#mapa img{max-width:none}
+#mapa_ubicaciones{height:400px;border:1px solid #999}
+#mapa_ubicaciones img{max-width:none}
+.errorlist{padding:0;margin:0;list-style:none}
+.errorlist li{font-weight:bold}

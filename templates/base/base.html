@@ -1,0 +1,94 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang='es'>
+<head>
+   <!-- script de la protada -->
+   {% block portada %}
+       
+   
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Surgeon Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+   SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{% static 'pg_principal/css/bootstrap.css' %}" type="text/css" rel="stylesheet" media="all">
+<link href="{% static 'pg_principal/css/style.css' %}" type="text/css" rel="stylesheet" media="all"> 
+<link rel="stylesheet" href="{% static 'pg_principal/css/swipebox.css' %}">     
+<link href="{% static 'pg_principal/css/animate.css' %}" rel="stylesheet" type="text/css" media="all"> <!-- animation -->
+<link href="{% static 'pg_principal/css/font-awesome.css' %}" rel="stylesheet"> <!-- font-awesome icons -->
+<!-- //Custom Theme files --> 
+<!-- js -->
+<script src="{% static 'pg_principal/js/jquery-2.2.3.min.js' %}"></script> 
+<!-- //js -->
+<!-- web-fonts -->
+<link href="//fonts.googleapis.com/css?family=Enriqueta:400,700" rel="stylesheet">
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+   <!-- fin del script de la portada -->
+{% endblock portada %}
+   <meta charset='utf-8'>
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+   <link rel="stylesheet" href="{% static 'denuncias/css/styles.css' %}">
+   <script src="{% static 'denuncias/js/script.js'%}"></script>
+   <link rel="stylesheet" href="{% static 'app_map/css/styles.css' %}">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!--Boostrap -->
+
+   <style>#new_pubs{ color: red; }</style><!-- Estilo de la notifiacion del archivo listar_denuncias.html-->
+   
+   {% block title %}
+      <title>Emergencias K68</title> 
+   {% endblock title %}
+   
+</head>
+<body>
+{% block navbar %}
+<div id='cssmenu'>
+<ul>
+   <li><a href="#" style="background-color: #CC1414;"></a></li>
+   <li><a href="{% url 'denuncias:pgprincipal' %}">Emergencias K68</a></li>
+
+   <li class='active'><a href='#'>Denuncias</a>
+      <ul>
+         <li><a href="{% url 'denuncias:denuncia_crear' %}">Realizar Denuncia</a>
+         <!--Si observamos detenidamente hemos agregado en la parte superior del li del enlace un condicional que utilizar una variable llamada perms, en esta variable se almacenan los permisos de los que dispone el usuario que ha iniciado sesión, luego de perms podemos observar el nombre de la aplicación, en nuestro caso personas, y finalmente tenemos el permiso llamado add y el modelo persona que configuran el permiso add_persona, esta condificional nos dice, si el usuario tiene el permiso add_persona, entonces se debe renderizar el div, sino no hace nada. Si ejecutamos nuestra aplicación observamos lo siguiente: -->
+         </li>
+         {% if perms.denuncias.add_denuncia %}
+         <li><a href="{% url 'denuncias:listar' %}">Listar Denuncia</a>
+         {% endif %}
+         </li>
+      </ul>
+   </li>
+   <li><a href='#'>Opciones</a>
+      <ul>
+         <li><a href="{% url 'denuncias:contacto' %}">Contacto</a></li>
+         <li><a href="http://bomberosk68caacupe.blogspot.com/p/blog-page.html">CBVP</a></li>
+         <li><a href="http://bomberosk68caacupe.blogspot.com/">Blog</a></li>
+         <li><a href="{% url 'logout' %}">Cerrar sesion</a></li>
+      </ul>
+   </li>
+</ul>
+</div>
+{% endblock navbar %}
+{% block content %}
+{% endblock content %}
+
+{% block footer %}
+    
+{% endblock footer %}
+
+
+
+
+
+
+{% block js %}
+<!-- Todo esto esta relacionado con el mapa de google con javascript -->
+      <script src="{% static 'app_map/js/script.js'%}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHcQT0yBuaLXWdx6Mv_hAroOB0HLmNp5g&callback=init"></script>
+      <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js"></script>
+{% endblock js %}
+</body>
+<html>

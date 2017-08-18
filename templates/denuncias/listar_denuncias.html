@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+{% block portada %}
+    <!-- dejar en blanco este block -->
+{% endblock portada %}
+{% block content %} <br>
+<div class="container">
+<h2>Denuncias <small id="new_pubs"></small></h2>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Lista de las mas recientes denuncias</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if object_list %}
+    {% for denuncias in object_list %}
+  
+    <tr>
+      <td><p class="denuncias" data-date="{{ denuncias.fecha|date:"c"}}"></p><a class="list-group-item" href="{% url 'denuncias:detail' denuncias.id %}">
+      <strong>{{ denuncias.descripcion }}</strong><br>
+      Denunciado hace {{ denuncias.fecha|timesince }}</td></a>
+    </tr>
+    {% endfor  %}
+  {% else %}
+  <h3>No hay Denuncias!</h3>
+{% endif %}
+  </tbody>
+</table>
+<ul class="pager">
+  <li>
+    {% if page_obj.has_previous %}
+         <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+        </li>
+  <li>
+    {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">Next</a> 
+      {% endif %}
+    </li>
+</ul>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+<script>
+  var beep5 = new Audio();
+  beep5.src = '/static/audio/notify.mp3';
+  $(function () {
+    var object_list = $('.denuncias');
+    var last_pub = $(object_list[0]).attr('data-date');
+    checkNewPublications(last_pub);
+  });
+
+  function checkNewPublications(date)
+  {
+    var $notify = $('#new_pubs');
+
+    setInterval( function () {
+      $.get('/denuncias/check_pubs/', {'date': date}, function (data) {
+
+        if (data.num_pubs === 0)
+          $notify.text('No hay nuevas denuncias');
+        
+        else if (data.num_pubs !== 1) {
+          $notify.text('No hay nuevas denuncias');
+        }
+        else
+        {
+          var msg = (data.num_pubs === 1) ? ' nueva denuncia' : ' nuevas Denuncias';
+          $notify.text(data.num_pubs + msg);
+          beep5.play();
+          
+        } 
+        
+      }, 'json');
+    }, 1000); // cambiar por mas segundos para evitar saturación de peticiones
+  }
+</script>
+{% endblock js %}

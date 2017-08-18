@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+{% if messages %}
+<div class="alert alert-success">
+    {% for m in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ m }}</li>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+	<div class="form-group row">
+		<form method="post"><br>
+			{% csrf_token %}
+			{{ form.as_p }}
+			<div id="mapa"></div><br>
+			<button type="submit" class="btn btn-primary">Registrar</button>
+		</form>
+	</div>
+</div>
+{% endblock %}
+{% block portada %}
+   <script>
+		$(document).ready(function(){
+			$('select#select_servicios').change(function () {
+				var seleccionado = $(this).find("option:selected");
+				var valor_select  = seleccionado.val();
+				var nombre_servicio   = seleccionado.text();
+
+				data = {'servicio' : nombre_servicio };
+					ajax('/denuncias/detalles/', data, function(result){
+						resultado = result;
+						console.log(result);
+						$("#select_tipo_servicio option").remove();
+						for (var i = result.length - 1; i >= 0; i--) {
+							$("#select_tipo_servicio").append('<option>'+ result[i].TipoServicio +'</option>');
+						};
+					});
+				});
+			});
+		</script>
+{% endblock portada %}

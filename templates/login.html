@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+{% endblock %}
+{% block navbar%}
+{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+<style>
+    body {
+  background-image: url("static/img/fond.jpg");
+}
+</style>
+
+   <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-heading">
+
+                <h2 class="text-center"><img src="static/img/k68ememregencias.png" style="width: 90px; height: 100px; " alt="">
+                </h2>
+
+            </div>
+            <hr />
+            <div class="modal-body">
+                <form action="" role="form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                            </span>
+                            <input class="form-control" type="text" name="username" placeholder="User Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-lock"></span>
+                            </span>
+                            <input class="form-control" type="password" name="password" placeholder="Password">
+                            
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+
+                        <a href="{% url 'usuario:registrar' %}" class="btn btn-link">No estoy registrado</a>
+                
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+{% endblock %}

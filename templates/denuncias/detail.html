@@ -1,0 +1,124 @@
+{% extends 'base/base.html' %}
+{% block portada %}
+    <!-- dejar en blanco este block -->
+{% endblock portada %}
+{% block content %}
+<div class="container"> 
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v3"></script> 
+<br>
+<table class="table table-responsive">
+  <thead>
+    <tr>
+      <th>Descripcion</th>
+      <th>Latitud</th>
+      <th>Longitud</th>
+      <th>Fecha de denuncia</th>
+      <td>Usuario</td>
+      <td>Servicio</td>
+      <td>Tipo de Servicio</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ denuncia.descripcion }}</td>
+      <td>{{ denuncia.lat }}</td>
+      <td>{{ denuncia.lng }}</td>
+      <td>{{ denuncia.fecha }}</td>
+      <td>{{ denuncia.user }}</td>
+      <td>{{ denuncia.dn_servicio }}</td>
+      <td>{{ denuncia.dn_tiposervicio }}</td>
+    </tr>
+  </tbody>
+{% if error_message %}
+  <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+</table>
+</div>
+
+{% endblock content %}
+
+
+{% block footer %}
+
+
+{% endblock footer %}
+
+{% block js %}
+    <div class="container">
+
+<div id="mapa2" style="width: 950px; height: 400px; ">
+    Aca va nuestro mapa
+  </div>
+  <script type="text/javascript">
+    var divMapa = document.getElementById('mapa2');
+    navigator.geolocation.getCurrentPosition( fn_ok, fn_mal );
+    function fn_mal(){}
+    function fn_ok( rta ){
+      var lat = {{ denuncia.lat }}
+      var lon = {{ denuncia.lng }}
+
+      var gLatLon = new google.maps.LatLng( lat, lon );
+      var objConfig = {
+        zoom: 10,
+        center: gLatLon
+      }
+
+      var gMapa = new google.maps.Map( divMapa, objConfig );
+
+
+      var objConfigMarker = {
+        position: gLatLon,
+        map: gMapa,
+        title: "Usted esta aqui"
+      }
+      var gMarker = new google.maps.Marker( objConfigMarker );
+      
+      var gCoder = new google.maps.Geocoder( );
+      var objInformacion = {
+        address: 'Terminal De Omnibus de Caacupé'
+      }
+        gCoder.geocode( objInformacion, fn_coder );
+
+      function fn_coder( datos ){
+        var coordenadas = datos[0].geometry.location;
+
+        var config = {
+          map: gMapa,
+          position: coordenadas,
+          title: 'Banco'
+        }
+
+        var gMarkerDV = new google.maps.Marker( config )
+          
+      }
+      var objConfigDR = {
+        map: gMapa
+      }
+
+      var objConfigDS = {
+        origin: gLatLon,
+        destination: objInformacion.address,
+        //destination: 'Itapua, Molas Lopez, Asuncion',
+        travelMode: google.maps.TravelMode.DRIVING
+
+      }
+
+      var ds = new google.maps.DirectionsService( );
+      var dr = new google.maps.DirectionsRenderer( objConfigDR );
+
+        ds.route( objConfigDS, fnRutear );
+
+      function fnRutear( resultados, status ){
+        if( status == 'OK'){
+          dr.setDirections( resultados );
+        }else{
+          alert('No se encontro una ruta disponble al lugar del Incendente!'+status);
+        }
+
+      }
+      }
+  
+  </script>
+  </div>
+</div>
+{% endblock js %}
